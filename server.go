@@ -18,5 +18,5 @@ func main() {
 		fmt.Fprintf(w, "Hello %s\n", name)
 	})
 
-	r.Ser(":9990", nil)
+	http.ListenAndServe(":9990", r)
 }
