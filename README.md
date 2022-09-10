@@ -15,17 +15,37 @@
 <p>Build go app</p>
 <code>go build main.go</code>
 <code>path=$(readlink -f main)</code>
-<p>Make service</p>
-<code>echo [Unit]
-Description=goweb
+<code>sudo nano /lib/systemd/system/$your_site.service</code>
+<p>Copy this</p>
+<pre>
+[Unit]
+Description=$your_site
 
 [Service]
 Type=simple
 Restart=always
 RestartSec=5s
-ExecStart=/home/user/go/go-web/main
+ExecStart=$path
 
 [Install]
 WantedBy=multi-user.target
-</code>
-<code>sudo nano /lib/systemd/system/$your_site.service</code>
+</pre>
+<p>Start your server service</p>
+<code>sudo service $your_site start</code>
+<code>sudo service $your_site status</code>
+
+<p>Nginx settings</p>
+<code>cd /etc/nginx/sites-available</code>
+<code>sudo nano $your_domain</code>
+<pre>
+server {
+    server_name $your_domain www.$your_domain;
+
+    location / {
+        proxy_pass http://localhost:9990;
+    }
+}
+</pre>
+<code>sudo ln -s /etc/nginx/sites-available/$your_domain /etc/nginx/sites-enabled/$your_domain</code>
+<code>sudo nginx -s reload</code>
+<p>That's end, now you can test your app</p>
