@@ -37,14 +37,14 @@ WantedBy=multi-user.target
 <p>Nginx settings</p>
 <code>cd /etc/nginx/sites-available</code>
 <code>sudo nano $your_domain</code>
-<pre>
+<pre>{
 server {
     server_name $your_domain www.$your_domain;
 
     location / {
         proxy_pass http://localhost:9990;
     }
-}
+}}
 </pre>
 <code>sudo ln -s /etc/nginx/sites-available/$your_domain /etc/nginx/sites-enabled/$your_domain</code>
 <code>sudo nginx -s reload</code>
